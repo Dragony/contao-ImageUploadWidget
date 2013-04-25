@@ -63,7 +63,7 @@ class ImageUpload extends \Widget implements \uploadable
 	public function __construct($arrAttributes=null)
 	{
 		parent::__construct($arrAttributes);
-		$this->import('BackendUser');
+		$this->import('Input');
 		$this->objUploader = new \FileUpload();
 		$this->objUploader->setName($this->strName);
 		$this->origName = $this->splitFileExt($_FILES[$this->strName]['name'][0]);
@@ -92,6 +92,16 @@ class ImageUpload extends \Widget implements \uploadable
 	{
 		$strUploadTo = 'system/tmp';
 		if(!isset($this->origName['name'])){
+			if($this->mandatory and $this->Input->post('prev_'.$this->strName) == ''){
+				if ($this->strLabel == ''){
+					$this->addError($GLOBALS['TL_LANG']['ERR']['mdtryNoLabel']);
+				}
+				else{
+					$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
+				}
+				return '';
+			}
+			
 			if(isset($_POST['deleteImage'])){
 				unlink(TL_ROOT."/".$this->varValue);
 				return '';
@@ -115,6 +125,7 @@ class ImageUpload extends \Widget implements \uploadable
 			return $upload[0];
 		}
 		return '';
+		parent::validate();
 	}
 	
 	protected function getPath($strUploadTo){
