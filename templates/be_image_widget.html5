@@ -1,0 +1,8 @@
+<h3><?php echo $GLOBALS['TL_LANG']['MSC']['ImageUploadWidget']['title']; ?></h3>
+<?php if($this->varValue): ?>
+<img src="<?php echo $this->getImage($this->varValue, 300, 300, 'proportional') ?>"><br>
+<?php endif; ?>
+<input type="file" name="<?php echo $this->strName; ?>[]" class="tl_upload_field" onfocus="Backend.getScrollOffset()"><br>
+<?php if($this->varValue): ?>
+<input type="checkbox" value="1" name="deleteImage"> <?php echo $GLOBALS['TL_LANG']['MSC']['ImageUploadWidget']['deleteImage']; ?>
+<?php endif; ?>
